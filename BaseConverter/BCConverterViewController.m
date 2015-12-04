@@ -9,8 +9,13 @@
 #import <iAd/iAd.h>
 #import "BCConverterViewController.h"
 #import "BCBaseConverter.h"
+#import "BCAppDelegate.h"
 
 @implementation BCConverterViewController
+
+- (BCAppDelegate *)appDelegate {
+    return (BCAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
 
 - (instancetype)init {
     if (self = [super initWithStyle:UITableViewStylePlain]) {
@@ -30,12 +35,32 @@
         self.navigationItem.title = @"Converter";
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     }
-    self.canDisplayBannerAds = YES;
-    self.interstitialPresentationPolicy = ADInterstitialPresentationPolicyAutomatic;
+    
+    if (![self appDelegate].allFeaturesUnlocked) {
+        self.canDisplayBannerAds = YES;
+        self.interstitialPresentationPolicy = ADInterstitialPresentationPolicyAutomatic;
+    } else {
+        self.canDisplayBannerAds = NO;
+        self.interstitialPresentationPolicy = ADInterstitialPresentationPolicyNone;
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (![self appDelegate].allFeaturesUnlocked) {
+        self.canDisplayBannerAds = YES;
+        self.interstitialPresentationPolicy = ADInterstitialPresentationPolicyAutomatic;
+    } else {
+        self.canDisplayBannerAds = NO;
+        self.interstitialPresentationPolicy = ADInterstitialPresentationPolicyNone;
+    }
 }
 
 - (BOOL)shouldPresentInterstitialAd {
-    return YES;
+    if (![self appDelegate].allFeaturesUnlocked)
+        return YES;
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {
