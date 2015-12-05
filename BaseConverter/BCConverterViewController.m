@@ -107,6 +107,20 @@
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    NSMutableArray *array = self.tableViewItems.mutableCopy;
+
+    id o = array[sourceIndexPath.row];
+    [array removeObject:o];
+    [array insertObject:o atIndex:destinationIndexPath.row];
+    self.tableViewItems = [NSArray arrayWithArray:array];
+    [[NSUserDefaults standardUserDefaults] setObject:self.tableViewItems forKey:@"baseArray"];
+}
+
 #pragma mark - Editing
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {

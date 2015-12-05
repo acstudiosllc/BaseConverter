@@ -15,7 +15,6 @@
 		AB3A9A2F1C1110FC002D114E /* BCBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3A9A2D1C1110FC002D114E /* BCBaseCell.m */; };
 		AB3A9A301C1110FC002D114E /* BCBaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB3A9A2E1C1110FC002D114E /* BCBaseCell.xib */; };
 		AB3A9A331C111317002D114E /* BCBaseConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3A9A321C111317002D114E /* BCBaseConverter.m */; };
-		AB3A9A361C112A43002D114E /* Icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = AB3A9A341C11266A002D114E /* Icon-120.png */; };
 		AB3A9A381C112DD9002D114E /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3A9A371C112DD9002D114E /* iAd.framework */; };
 		AB3A9A451C1133A5002D114E /* settings_filled@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB3A9A391C1133A5002D114E /* settings_filled@3x.png */; };
 		AB3A9A461C1133A5002D114E /* calculator.png in Resources */ = {isa = PBXBuildFile; fileRef = AB3A9A3A1C1133A5002D114E /* calculator.png */; };
@@ -49,7 +48,6 @@
 		AB3A9A2E1C1110FC002D114E /* BCBaseCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BCBaseCell.xib; sourceTree = "<group>"; };
 		AB3A9A311C111317002D114E /* BCBaseConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCBaseConverter.h; sourceTree = "<group>"; };
 		AB3A9A321C111317002D114E /* BCBaseConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCBaseConverter.m; sourceTree = "<group>"; };
-		AB3A9A341C11266A002D114E /* Icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-120.png"; path = "Icons/Icon-120.png"; sourceTree = "<group>"; };
 		AB3A9A371C112DD9002D114E /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		AB3A9A391C1133A5002D114E /* settings_filled@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings_filled@3x.png"; sourceTree = "<group>"; };
 		AB3A9A3A1C1133A5002D114E /* calculator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calculator.png; sourceTree = "<group>"; };
@@ -87,7 +85,6 @@
 			children = (
 				AB3A9A551C113866002D114E /* StoreKit.framework */,
 				AB3A9A371C112DD9002D114E /* iAd.framework */,
-				AB3A9A341C11266A002D114E /* Icon-120.png */,
 				AB3A9A511C1133AF002D114E /* Images */,
 				AB3A99FF1C110FEE002D114E /* BaseConverter */,
 				AB3A99FE1C110FEE002D114E /* Products */,
@@ -217,7 +214,6 @@
 			files = (
 				AB3A9A4A1C1133A5002D114E /* calculator_filled@2x.png in Resources */,
 				AB3A9A4B1C1133A5002D114E /* calculator_filled@3x.png in Resources */,
-				AB3A9A361C112A43002D114E /* Icon-120.png in Resources */,
 				AB3A9A4D1C1133A5002D114E /* calculator_filled.png in Resources */,
 				AB3A9A301C1110FC002D114E /* BCBaseCell.xib in Resources */,
 				AB3A9A581C113961002D114E /* InAppPurchases.plist in Resources */,
@@ -392,6 +388,7 @@
 				AB3A9A221C110FEF002D114E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
