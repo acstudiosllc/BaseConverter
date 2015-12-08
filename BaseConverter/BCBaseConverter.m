@@ -10,7 +10,7 @@
 
 @implementation BCBaseConverter
 
-+ (NSInteger)valueForDigit:(NSString *)digit {
+- (NSInteger)valueForDigit:(NSString *)digit {
     char c;
     c = digit.UTF8String[0];
     if (c >= '0' && c <= '9')
@@ -22,7 +22,7 @@
     return 0;
 }
 
-+ (NSInteger)convertString:(NSString *)string fromBase:(NSInteger)base {
+- (NSInteger)convertString:(NSString *)string fromBase:(NSInteger)base {
     NSInteger numberOfDigits, result, index;
     
     for (index = result = 0, numberOfDigits = string.length; numberOfDigits > 0; --numberOfDigits, ++index)
@@ -30,7 +30,7 @@
     return result;
 }
 
-+ (NSString *)digitForValue:(NSInteger)val {
+- (NSString *)digitForValue:(NSInteger)val {
     char c;
     if (val < 10)
         c = '0' + val;
@@ -41,7 +41,7 @@
     return [NSString stringWithFormat:@"%c", c];
 }
 
-+ (NSString *)convertNumber:(NSString *)num fromBase:(NSInteger)baseOriginal toBase:(NSInteger)baseFinal {
+- (NSString *)convertNumber:(NSString *)num fromBase:(NSInteger)baseOriginal toBase:(NSInteger)baseFinal {
     NSInteger number, numberOfDigits, exponent, value, divisor;
     NSMutableString *result;
     
@@ -58,6 +58,23 @@
     }
     
     return result;
+}
+
+- (NSString *)nameForBase:(NSInteger)base {
+    if (!self.baseNamesDictionary) {
+        NSString *JSONFilePath = [[NSBundle mainBundle] pathForResource:@"BaseNames" ofType:@"json"];
+        NSData *JSONData = [NSData dataWithContentsOfFile:JSONFilePath];
+        
+        NSError *error;
+        self.baseNamesDictionary = [NSJSONSerialization JSONObjectWithData:JSONData options:kNilOptions error:&error];
+        if (error)
+            NSLog(@"%@", error);
+    }
+    if (base < 10)
+        return self.baseNamesDictionary[@"singles"][base-2];
+    else if (base == 11)
+        return @"unary";
+    return [self.baseNamesDictionary[@"digits"][(base%10)] stringByAppendingString:self.baseNamesDictionary[@"tens"][(base/10)-1]];
 }
 
 @end

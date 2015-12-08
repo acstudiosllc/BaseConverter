@@ -1,0 +1,32 @@
+{
+    "singles" : [
+                      "binary",
+                      "ternary",
+                      "quarternary",
+                      "quinary",
+                      "senary",
+                      "septenary",
+                      "octal",
+                      "nonary"
+     ],
+    "tens" : [
+              "decimal",
+              "vigesimal",
+              "trigesimal",
+              "quadragesimal",
+              "quinquagesimal",
+              "sexagesimal"
+    ],
+    "digits" : [
+                "",
+                "un",
+                "duo",
+                "tri",
+                "quattuor",
+                "quin",
+                "hexa",
+                "septen",
+                "octo",
+                "nona"
+    ]
+}

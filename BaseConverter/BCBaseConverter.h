@@ -10,6 +10,9 @@
 
 @interface BCBaseConverter : NSObject
 
-+ (NSString *)convertNumber:(NSString *)num fromBase:(NSInteger)baseOriginal toBase:(NSInteger)baseFinal;
+@property (strong, nonatomic) NSDictionary *baseNamesDictionary;
+
+- (NSString *)convertNumber:(NSString *)num fromBase:(NSInteger)baseOriginal toBase:(NSInteger)baseFinal;
+- (NSString *)nameForBase:(NSInteger)base;
 
 @end

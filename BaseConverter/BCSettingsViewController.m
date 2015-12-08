@@ -26,13 +26,18 @@ NSString *const ACSettingsButtonKey = @"button";
 
 - (void)populateSettings {
     NSDictionary *basicSettings =
-    @{@"name" : @"Settings", @"items" : @[
+    @{@"name" : @"Converter", @"items" : @[
+              @{@"name" : @"Base name", @"type" : ACSettingsSegmentedControlKey, @"values" : @[@"Both", @"Number", @"Name"], @"selectedValue" : [[NSUserDefaults standardUserDefaults] objectForKey:@"baseDisplay"], @"selector" : @"displayNameChanged:"}
+              ]};
+    
+    NSDictionary *supportSettings =
+    @{@"name" : @"Support", @"items" : @[
               @{@"name" : @"Support", @"type" : ACSettingsWebViewKey, @"url" : @"http://a-cstudios.com/chris/projects/bases/support.php", @"requiresPurchase" : @(NO)},
               @{@"name" : @"Remove ads", @"type" : ACSettingsButtonKey, @"selector" : @"removeAds", @"requiresPurchase" : @(NO)},
               @{@"name" : @"Restore purchase", @"type" : ACSettingsButtonKey, @"selector" : @"restorePurchases", @"requiresPurchase" : @(NO)}
               ]};
 
-    settings = @[basicSettings];
+    settings = @[basicSettings, supportSettings];
 }
 
 - (void)viewDidLoad {
@@ -181,7 +186,6 @@ NSString *const ACSettingsButtonKey = @"button";
         NSURL *URL = [NSURL URLWithString:cellDictionary[@"url"]];
         [webView loadRequest:[NSURLRequest requestWithURL:URL]];
         webView.scalesPageToFit = YES;
-        //webView.scrollView.scrollEnabled = NO;
         vc = webViewController;
     }
     else if ([cellType isEqualToString:ACSettingsViewControllerKey]) {
@@ -192,6 +196,12 @@ NSString *const ACSettingsButtonKey = @"button";
 }
 
 #pragma mark - Actions
+
+- (void)displayNameChanged:(UISegmentedControl *)sender {
+    NSString *value = [sender titleForSegmentAtIndex:sender.selectedSegmentIndex];
+    [[NSUserDefaults standardUserDefaults] setObject:value forKey:@"baseDisplay"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"baseDisplayChanged" object:nil];
+}
 
 - (void)removeAds {
     [[self appDelegate] removeAds];

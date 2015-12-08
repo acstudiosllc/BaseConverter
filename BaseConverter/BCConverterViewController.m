@@ -11,7 +11,9 @@
 #import "BCBaseConverter.h"
 #import "BCAppDelegate.h"
 
-@implementation BCConverterViewController
+@implementation BCConverterViewController {
+    BCBaseConverter *baseConverter;
+}
 
 - (BCAppDelegate *)appDelegate {
     return (BCAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -25,6 +27,8 @@
             self.tableViewItems = @[@(10), @(16), @(8), @(2)];
         self.currentValue = @"0";
         self.currentBase = 10;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self.tableView selector:@selector(reloadData) name:@"baseDisplayChanged" object:nil];
     }
     return self;
 }
@@ -84,9 +88,20 @@
     static NSString *cellID = @"Cell";
     BCBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     
+    if (!baseConverter)
+        baseConverter = [[BCBaseConverter alloc] init];
+    
     cell.base = [self.tableViewItems[indexPath.row] integerValue];
-    cell.baseLabel.text = [NSString stringWithFormat:@"Base %d", (int)cell.base];
-    cell.textField.text = [BCBaseConverter convertNumber:self.currentValue fromBase:self.currentBase toBase:cell.base];
+    
+    NSString *baseDisplay = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseDisplay"];
+    if ([baseDisplay isEqualToString:@"Both"])
+        cell.baseLabel.text = [NSString stringWithFormat:@"Base %d (%@)", (int)cell.base, [baseConverter nameForBase:cell.base]];
+    else if ([baseDisplay isEqualToString:@"Number"])
+        cell.baseLabel.text = [NSString stringWithFormat:@"Base %d", (int)cell.base];
+    else
+        cell.baseLabel.text = [NSString stringWithFormat:@"%@", [baseConverter nameForBase:cell.base]];
+    
+    cell.textField.text = [baseConverter convertNumber:self.currentValue fromBase:self.currentBase toBase:cell.base];
     cell.delegate = self;
     
     return cell;

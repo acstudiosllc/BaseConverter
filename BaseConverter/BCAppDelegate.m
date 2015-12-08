@@ -10,6 +10,7 @@
 #import "BCConverterViewController.h"
 #import "BCSettingsViewController.h"
 
+
 @implementation BCAppDelegate {
     SKProduct *removeAdsProduct;
 }
@@ -17,6 +18,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"purchased"])
         [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:@"purchased"];
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"baseDisplay"])
+        [[NSUserDefaults standardUserDefaults] setObject:@"Both" forKey:@"baseDisplay"];
+    
+    UIColor *primaryColor = [UIColor colorWithRed:53.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -30,7 +35,6 @@
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.viewControllers = @[converterNavigationController, settingsNavigationController];
-    tabBarController.tabBar.tintColor = [UIColor colorWithRed:53.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0];
     self.window.rootViewController = tabBarController;
     
     [self.window makeKeyAndVisible];
@@ -42,9 +46,11 @@
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
     self.window.tintColor = [UIColor whiteColor];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:53.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0]];
+    [[UINavigationBar appearance] setBarTintColor:primaryColor];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    [[UITextField appearance] setTintColor:[UIColor colorWithRed:53.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0]];
+    [[UITextField appearance] setTintColor:primaryColor];
+    tabBarController.tabBar.tintColor = primaryColor;
+    [[UISegmentedControl appearance] setTintColor:primaryColor];
 
     return YES;
 }

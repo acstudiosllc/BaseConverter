@@ -31,6 +31,7 @@
 		AB3A9A541C1134E8002D114E /* BCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3A9A531C1134E8002D114E /* BCSettingsViewController.m */; };
 		AB3A9A561C113866002D114E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3A9A551C113866002D114E /* StoreKit.framework */; };
 		AB3A9A581C113961002D114E /* InAppPurchases.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB3A9A571C113961002D114E /* InAppPurchases.plist */; };
+		ABBED48A1C16627100E4A212 /* BaseNames.json in Resources */ = {isa = PBXBuildFile; fileRef = ABBED4891C16627100E4A212 /* BaseNames.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		AB3A9A531C1134E8002D114E /* BCSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCSettingsViewController.m; sourceTree = "<group>"; };
 		AB3A9A551C113866002D114E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		AB3A9A571C113961002D114E /* InAppPurchases.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InAppPurchases.plist; sourceTree = "<group>"; };
+		ABBED4891C16627100E4A212 /* BaseNames.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BaseNames.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				AB3A9A2E1C1110FC002D114E /* BCBaseCell.xib */,
 				AB3A9A521C1134E8002D114E /* BCSettingsViewController.h */,
 				AB3A9A531C1134E8002D114E /* BCSettingsViewController.m */,
+				ABBED4891C16627100E4A212 /* BaseNames.json */,
 				AB3A9A0D1C110FEE002D114E /* Images.xcassets */,
 				AB3A9A0F1C110FEE002D114E /* LaunchScreen.xib */,
 				AB3A9A001C110FEE002D114E /* Supporting Files */,
@@ -212,6 +215,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABBED48A1C16627100E4A212 /* BaseNames.json in Resources */,
 				AB3A9A4A1C1133A5002D114E /* calculator_filled@2x.png in Resources */,
 				AB3A9A4B1C1133A5002D114E /* calculator_filled@3x.png in Resources */,
 				AB3A9A4D1C1133A5002D114E /* calculator_filled.png in Resources */,
