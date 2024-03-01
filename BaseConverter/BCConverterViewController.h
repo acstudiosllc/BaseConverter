@@ -9,10 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BCBaseCell.h"
 
-@interface BCConverterViewController : UITableViewController <BCBaseCellDelegate, UIAlertViewDelegate>
-
-@property (strong, nonatomic) NSString *currentValue;
-@property (nonatomic) NSInteger currentBase;
-@property (strong, nonatomic) NSArray *tableViewItems;
+@interface BCConverterViewController : UIViewController
 
 @end

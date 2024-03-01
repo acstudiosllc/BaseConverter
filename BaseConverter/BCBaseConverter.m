@@ -8,7 +8,36 @@
 
 #import "BCBaseConverter.h"
 
+@interface BCBaseConverter ()
+
+@property (nonatomic) NSInteger value;
+
+@end
+
 @implementation BCBaseConverter
+
+- (void)setValue:(NSString *)value inBase:(NSInteger)base {
+    self.value = [self convertString:value fromBase:base];
+}
+
+- (NSString *)getValueForBase:(NSInteger)base {
+    NSInteger number, numberOfDigits, exponent, value, divisor;
+    NSMutableString *result;
+    
+    number = self.value;
+    
+    for (numberOfDigits = 1; powl((long double)base, (long)numberOfDigits) <= number; ++numberOfDigits);
+
+    result = @"".mutableCopy;
+    for (exponent = numberOfDigits; exponent > 0; --exponent) {
+        divisor = (exponent > 0) ? powl((long double)base, exponent-1) : 0;
+        value = number/divisor;
+        [result appendString:[self digitForValue:value]];
+        number -= value * divisor;
+    }
+    
+    return result;
+}
 
 - (NSInteger)valueForDigit:(NSString *)digit {
     char c;
@@ -31,7 +60,7 @@
 }
 
 - (NSString *)digitForValue:(NSInteger)val {
-    char c;
+    char c = '0';
     if (val < 10)
         c = '0' + val;
     else if (val >= 10 && val < 36)
@@ -39,25 +68,6 @@
     else if (val >= 36)
         c = 'a' + (val - 36);
     return [NSString stringWithFormat:@"%c", c];
-}
-
-- (NSString *)convertNumber:(NSString *)num fromBase:(NSInteger)baseOriginal toBase:(NSInteger)baseFinal {
-    NSInteger number, numberOfDigits, exponent, value, divisor;
-    NSMutableString *result;
-    
-    number = [self convertString:num fromBase:baseOriginal];
-    
-    for (numberOfDigits = 1; powl((long double)baseFinal, (long)numberOfDigits) <= number; ++numberOfDigits);
-
-    result = @"".mutableCopy;
-    for (exponent = numberOfDigits; exponent > 0; --exponent) {
-        divisor = (exponent > 0) ? powl((long double)baseFinal, exponent-1) : 0;
-        value = number/divisor;
-        [result appendString:[self digitForValue:value]];
-        number -= value * divisor;
-    }
-    
-    return result;
 }
 
 - (NSString *)nameForBase:(NSInteger)base {

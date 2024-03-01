@@ -31,13 +31,48 @@ NSString *const ACSettingsButtonKey = @"button";
               ]};
     
     NSDictionary *supportSettings =
-    @{@"name" : @"Support", @"items" : @[
-              @{@"name" : @"Support", @"type" : ACSettingsWebViewKey, @"url" : @"http://a-cstudios.com/chris/projects/bases/support.php", @"requiresPurchase" : @(NO)},
-              @{@"name" : @"Remove ads", @"type" : ACSettingsButtonKey, @"selector" : @"removeAds", @"requiresPurchase" : @(NO)},
-              @{@"name" : @"Restore purchase", @"type" : ACSettingsButtonKey, @"selector" : @"restorePurchases", @"requiresPurchase" : @(NO)}
-              ]};
+    @{
+        @"name" : @"Support",
+        @"items" : @[
+            @{
+                @"name" : @"Remove ads",
+                @"type" : ACSettingsButtonKey,
+                @"action": ^{
+                    [[self appDelegate] removeAds];
+                },
+                @"requiresPurchase" : @(NO)
+            },
+            @{
+                @"name" : @"Restore purchase",
+                @"type" : ACSettingsButtonKey,
+                @"action": ^{
+                    [[self appDelegate] restorePurchase];
+                },
+                @"requiresPurchase" : @(NO)
+            }
+        ]
+    };
 
-    settings = @[basicSettings, supportSettings];
+    settings = @[
+        basicSettings,
+        supportSettings
+#ifdef DEBUG
+        , @{
+            @"name": @"Debug",
+            @"items": @[
+                @{
+                    @"name": @"Toggle premium",
+                    @"type": ACSettingsButtonKey,
+                    @"action": ^{
+                        BOOL purchased = [[self appDelegate] allFeaturesUnlocked];
+                        [[NSUserDefaults standardUserDefaults] setValue:@(!purchased) forKey:@"purchased"];
+                    },
+                    @"requiresPurchase": @(NO)
+                }
+            ]
+        }
+#endif
+    ];
 }
 
 - (void)viewDidLoad {
@@ -139,6 +174,7 @@ NSString *const ACSettingsButtonKey = @"button";
     }
     
     BOOL requiresPurchase = [cellDictionary[@"requiresPurchase"] boolValue];
+    cell.textLabel.numberOfLines = 0;
     if (![[self appDelegate] allFeaturesUnlocked]) {
         if (requiresPurchase) {
             if (cell.accessoryView && [cell.accessoryView isKindOfClass:[UIControl class]])
@@ -174,19 +210,19 @@ NSString *const ACSettingsButtonKey = @"button";
     if ([cellType isEqualToString:ACSettingsTextFieldKey] || [cellType isEqualToString:ACSettingsSegmentedControlKey] || [cellType isEqualToString:ACSettingsSwitchKey])
         return;
     else if ([cellType isEqualToString:ACSettingsButtonKey]) {
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:NSSelectorFromString(cellDictionary[@"selector"])];
+        void (^action)(void) = cellDictionary[@"action"];
+        action();
         return;
     }
     else if ([cellType isEqualToString:ACSettingsWebViewKey]) {
-        UIViewController *webViewController = [[UIViewController alloc] init];
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:webViewController.view.frame];
-        webViewController.automaticallyAdjustsScrollViewInsets = YES;
-        [webViewController.view addSubview:webView];
-        NSURL *URL = [NSURL URLWithString:cellDictionary[@"url"]];
-        [webView loadRequest:[NSURLRequest requestWithURL:URL]];
-        webView.scalesPageToFit = YES;
-        vc = webViewController;
+//        UIViewController *webViewController = [[UIViewController alloc] init];
+//        UIWebView *webView = [[UIWebView alloc] initWithFrame:webViewController.view.frame];
+//        webViewController.automaticallyAdjustsScrollViewInsets = YES;
+//        [webViewController.view addSubview:webView];
+//        NSURL *URL = [NSURL URLWithString:cellDictionary[@"url"]];
+//        [webView loadRequest:[NSURLRequest requestWithURL:URL]];
+//        webView.scalesPageToFit = YES;
+//        vc = webViewController;
     }
     else if ([cellType isEqualToString:ACSettingsViewControllerKey]) {
         Class c = NSClassFromString(cellDictionary[@"controller"]);
@@ -201,14 +237,6 @@ NSString *const ACSettingsButtonKey = @"button";
     NSString *value = [sender titleForSegmentAtIndex:sender.selectedSegmentIndex];
     [[NSUserDefaults standardUserDefaults] setObject:value forKey:@"baseDisplay"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"baseDisplayChanged" object:nil];
-}
-
-- (void)removeAds {
-    [[self appDelegate] removeAds];
-}
-
-- (void)restorePurchases {
-    [[self appDelegate] restorePurchase];
 }
 
 @end

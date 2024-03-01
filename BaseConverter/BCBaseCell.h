@@ -8,21 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class BCBaseCell;
-
-@protocol BCBaseCellDelegate <NSObject>
-
-- (void)cell:(BCBaseCell *)cell textDidChange:(NSString *)text;
-
-@end
+@class BCBaseConverter;
 
 @interface BCBaseCell : UITableViewCell
 
 @property (nonatomic) NSInteger base;
-@property (weak, nonatomic) IBOutlet UILabel *baseLabel;
-@property (weak, nonatomic) IBOutlet UITextField *textField;
-@property (weak, nonatomic) id<BCBaseCellDelegate> delegate;
-
-- (IBAction)textChanged:(id)sender;
+@property (strong, nonatomic) UILabel *baseLabel;
+@property (strong, nonatomic) UITextField *textField;
+@property (strong, nonatomic) BCBaseConverter *converter;
 
 @end

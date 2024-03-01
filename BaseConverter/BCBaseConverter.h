@@ -12,7 +12,9 @@
 
 @property (strong, nonatomic) NSDictionary *baseNamesDictionary;
 
-- (NSString *)convertNumber:(NSString *)num fromBase:(NSInteger)baseOriginal toBase:(NSInteger)baseFinal;
+- (void)setValue:(NSString *)value inBase:(NSInteger)base;
+- (NSString *)getValueForBase:(NSInteger)base;
 - (NSString *)nameForBase:(NSInteger)base;
+- (NSInteger)valueForDigit:(NSString *)digit;
 
 @end

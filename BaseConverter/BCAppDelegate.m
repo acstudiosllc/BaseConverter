@@ -9,13 +9,14 @@
 #import "BCAppDelegate.h"
 #import "BCConverterViewController.h"
 #import "BCSettingsViewController.h"
-
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 @implementation BCAppDelegate {
     SKProduct *removeAdsProduct;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"purchased"])
         [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:@"purchased"];
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"baseDisplay"])
@@ -27,11 +28,11 @@
     
     BCConverterViewController *converterViewController = [[BCConverterViewController alloc] init];
     UINavigationController *converterNavigationController = [[UINavigationController alloc] initWithRootViewController:converterViewController];
-    converterNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Converter" image:[UIImage imageNamed:@"calculator.png"] selectedImage:[UIImage imageNamed:@"calculator_filled.png"]];
+    converterNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Converter" image:[UIImage systemImageNamed:@"number.square"] selectedImage:[UIImage systemImageNamed:@"number.square.fill"]];
     
     BCSettingsViewController *settingsViewController = [[BCSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *settingsNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    settingsNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage imageNamed:@"settings.png"] selectedImage:[UIImage imageNamed:@"settings_filled.png"]];
+    settingsNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[UIImage systemImageNamed:@"gearshape"] selectedImage:[UIImage systemImageNamed:@"gearshape.fill"]];
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.viewControllers = @[converterNavigationController, settingsNavigationController];
@@ -45,8 +46,30 @@
     [productsRequest start];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     
-    self.window.tintColor = [UIColor whiteColor];
-    [[UINavigationBar appearance] setBarTintColor:primaryColor];
+    UITabBarAppearance *tabBarAppearance = [[UITabBarAppearance alloc] init];
+    [tabBarAppearance configureWithOpaqueBackground];
+    tabBarAppearance.backgroundColor = [UIColor systemBackgroundColor];
+    tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:10.0 weight:UIFontWeightHeavy]};
+    tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:10.0 weight:UIFontWeightHeavy]};
+    tabBarController.tabBar.standardAppearance = tabBarAppearance;
+    tabBarController.tabBar.scrollEdgeAppearance = tabBarAppearance;
+    tabBarController.tabBar.layer.shadowOffset = CGSizeMake(0, 0);
+    tabBarController.tabBar.layer.shadowRadius = 2;
+    tabBarController.tabBar.layer.shadowColor = [UIColor systemGray2Color].CGColor;
+    tabBarController.tabBar.layer.shadowOpacity = 0.4;
+    
+    UINavigationBarAppearance *navigationBarAppearance = [[UINavigationBarAppearance alloc] init];
+    [navigationBarAppearance configureWithDefaultBackground];
+    navigationBarAppearance.backgroundColor = primaryColor;
+    navigationBarAppearance.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
+
+    converterNavigationController.navigationBar.standardAppearance = navigationBarAppearance;
+    converterNavigationController.navigationBar.scrollEdgeAppearance = navigationBarAppearance;
+    settingsNavigationController.navigationBar.standardAppearance = navigationBarAppearance;
+    settingsNavigationController.navigationBar.scrollEdgeAppearance = navigationBarAppearance;
+
+//    self.window.tintColor = primaryColor;
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     [[UITextField appearance] setTintColor:primaryColor];
     tabBarController.tabBar.tintColor = primaryColor;
@@ -81,25 +104,25 @@
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
 {
     [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"purchased"];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Your purchase has been restored successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Your purchase has been restored successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alertView show];
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
-    for (SKPaymentTransaction *transaction in transactions)
-    {
-        if (transaction.transactionState == SKPaymentTransactionStatePurchased || transaction.transactionState == SKPaymentTransactionStateRestored || transaction.transactionState)
-        {
-            [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"purchased"];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Your transaction has been processed successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-        }
-        else
-            NSLog(@"NOT BOUGHT");
-        if (transaction.transactionState != SKPaymentTransactionStatePurchasing)
-            [queue finishTransaction:transaction];
-    }
+//    for (SKPaymentTransaction *transaction in transactions)
+//    {
+//        if (transaction.transactionState == SKPaymentTransactionStatePurchased || transaction.transactionState == SKPaymentTransactionStateRestored || transaction.transactionState)
+//        {
+//            [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"purchased"];
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Your transaction has been processed successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//            [alertView show];
+//        }
+//        else
+//            NSLog(@"NOT BOUGHT");
+//        if (transaction.transactionState != SKPaymentTransactionStatePurchasing)
+//            [queue finishTransaction:transaction];
+//    }
 }
 
 @end
